@@ -1,4 +1,4 @@
-package com.example.tflitetest;
+package com.example.WasteSorting;
 
 import org.junit.Test;
 

@@ -1,8 +1,7 @@
-package com.example.tflitetest;
+// 갤러리에서 이미지를 선택
+package com.example.WasteSorting;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Pair;
@@ -19,29 +17,26 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-public class CameraActivity extends AppCompatActivity {
-    public static final String TAG = "[IC]CameraActivity";
-    public static final int CAMERA_IMAGE_REQUEST_CODE = 1;
-    private static final String KEY_SELECTED_URI = "KEY_SELECTED_URI";
+public class GalleryActivity extends AppCompatActivity {
+    private static final String TAG = "[IC]GalleryActivity";
+
+    public static final int GALLERY_IMAGE_REQUEST_CODE = 1;
 
     private ClassifierWithModel cls;
     private ImageView imageView;
-    private Button takeBtn, nextBtn;
+    private Button selectBtn, nextBtn;
     private TextView textView;
-
-    Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_gallery);
 
-        takeBtn = (Button) findViewById(R.id.takeBtn);
-        takeBtn.setOnClickListener(v -> getImageFromCamera());
+        selectBtn = (Button) findViewById(R.id.selectBtn);
+        selectBtn.setOnClickListener(v -> getImageFromGallery());
 
         imageView = (ImageView) findViewById(R.id.imageView);
         textView = (TextView) findViewById(R.id.textView);
@@ -59,61 +54,43 @@ public class CameraActivity extends AppCompatActivity {
             String large = textView.getText().toString();
             large = large.replaceAll("class: ", "");
 
-            Intent i = new Intent(CameraActivity.this, SortActivity.class);
+            Intent i = new Intent(GalleryActivity.this, SortActivity.class);
             i.putExtra("Large", large);  // 대분류 전달
             startActivity(i);
         });
-
-        // 카메라 앱 실행 중 메모리 부족으로 CameraActivity가 종료될 경우
-        if (savedInstanceState != null) {
-            Uri uri = savedInstanceState.getParcelable(KEY_SELECTED_URI);
-            if (uri != null)
-                selectedImageUri = uri;
-        }
     }
 
-    // 카메라 앱 실행
-    private void getImageFromCamera() {
-        File file = new File(
-                getExternalFilesDir(Environment.DIRECTORY_PICTURES), "picture.jpg");
-        if (file.exists())
-            file.delete();
-        selectedImageUri = FileProvider.getUriForFile(this, getPackageName(), file);
+    // 이미지 선택 - 둘이 세트
+    private void getImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImageUri);
-        startActivityForResult(intent, CAMERA_IMAGE_REQUEST_CODE);
+        startActivityForResult(intent, GALLERY_IMAGE_REQUEST_CODE);
     }
-
-    // 액티비티가 종료될 때 호출
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState((outState));
-
-        outState.putParcelable(KEY_SELECTED_URI, selectedImageUri);
-    }
-
-    // 결과
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_IMAGE_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_IMAGE_REQUEST_CODE) {
+            if (data == null) {
+                return;
+            }
+
+            Uri selectedImage = data.getData();
             Bitmap bitmap = null;
 
             try {
                 if (Build.VERSION.SDK_INT >= 29) {
-                    ImageDecoder.Source src = ImageDecoder
-                            .createSource(getContentResolver(), selectedImageUri);
+                    ImageDecoder.Source src =
+                            ImageDecoder.createSource(getContentResolver(), selectedImage);
                     bitmap = ImageDecoder.decodeBitmap(src);
                 } else {
-                    bitmap = MediaStore
-                            .Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                 }
             } catch (IOException ioe) {
                 Log.e(TAG, "Failed to read Image", ioe);
             }
 
+            // 결과 출력
             if (bitmap != null) {
                 Pair<String, Float> output = cls.classify(bitmap);
                 String resultStr = String.format(Locale.ENGLISH,

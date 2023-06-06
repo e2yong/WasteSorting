@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.tflitetest'
+    namespace 'com.example.WasteSorting'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.tflitetest"
+        applicationId "com.example.WasteSorting"
         minSdk 30
         targetSdk 33
         versionCode 1

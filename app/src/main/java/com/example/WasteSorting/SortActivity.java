@@ -1,4 +1,4 @@
-package com.example.tflitetest;
+package com.example.WasteSorting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
