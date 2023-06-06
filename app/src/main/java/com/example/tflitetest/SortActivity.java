@@ -2,7 +2,9 @@ package com.example.tflitetest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,12 +18,15 @@ public class SortActivity extends AppCompatActivity {
     public String large, small;
     private WasteQuestion q;    // 질문
 
+    // 포인트 관련
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    private int point;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort);
-
-
 
         largeText = (TextView) findViewById(R.id.largeText);
         smallText = (TextView) findViewById(R.id.smallText);
@@ -39,12 +44,12 @@ public class SortActivity extends AppCompatActivity {
 
         yesBtn.setOnClickListener(view -> {
             q.setAnswer(1);
-            // 소분류
+            // 소분류 대답
             if (q.getEnd() == 0) {
                 makeQuestion(large);
                 q.setA();
             }
-            // 분류가 끝나면 메인화면으로 이동하는 버튼
+            // 메인화면으로 이동
             else {
                 Intent i = new Intent(SortActivity.this, MainActivity.class);
                 startActivity(i);
@@ -53,12 +58,12 @@ public class SortActivity extends AppCompatActivity {
 
         noBtn.setOnClickListener(view -> {
             q.setAnswer(0);
-            // 소분류
+            // 소분류 대답
             if (q.getEnd() == 0) {
                 makeQuestion(large);
                 q.setA();
             }
-            // 분류가 끝나면 다음화면으로 이동하는 버튼
+            // 다음화면으로 이동
             else {
                 Intent i = new Intent(SortActivity.this, Edu1Activity.class);
                 i.putExtra("Small", small);  // 소분류 전달
@@ -85,9 +90,14 @@ public class SortActivity extends AppCompatActivity {
                 break;
         }
 
-        // 분류가 끝나면 포인트 추가 후 버튼 변경
+        // 소분류 끝
         if (q.getEnd() == 1 ) {
-            // 포인트 10 추가
+            // 포인트 10 추가 후 저장
+            pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+            editor = pref.edit();
+            point = pref.getInt("Point", 0);
+            editor.putInt("Point", point + 10);
+            editor.apply();
 
             // 버튼 변경
             small = q.getSmall();

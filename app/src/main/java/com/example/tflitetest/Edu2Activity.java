@@ -2,7 +2,9 @@ package com.example.tflitetest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -19,6 +21,11 @@ public class Edu2Activity extends AppCompatActivity {
 
     private String small, how;
     public TextToSpeech tts;    // TTS
+
+    // 포인트 관련
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    private int point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,13 @@ public class Edu2Activity extends AppCompatActivity {
 
         // 다음 화면
         endBtn.setOnClickListener(view -> {
+            // 포인트 10(total 20) 추가 후 저장
+            pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+            editor = pref.edit();
+            point = pref.getInt("Point", 0);
+            editor.putInt("Point", point + 10);
+            editor.apply();
+
             Intent i = new Intent(Edu2Activity.this, MainActivity.class);
             startActivity(i);
         });
