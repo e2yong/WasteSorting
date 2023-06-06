@@ -21,6 +21,8 @@ public class SortActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort);
 
+
+
         largeText = (TextView) findViewById(R.id.largeText);
         smallText = (TextView) findViewById(R.id.smallText);
         yesBtn = (Button) findViewById(R.id.yesBtn);
@@ -29,8 +31,7 @@ public class SortActivity extends AppCompatActivity {
         // 대분류 가져오기
         Intent intent = getIntent();
         large = intent.getStringExtra("Large");  // 데이터 받기
-        // 테스트: 만약 대분류 결과가 병이라면
-        large = "bottle";
+        large = "bottle";           // 테스트: 만약 대분류 결과가 병이라면
         largeText.setText(large);
 
         q = new WasteQuestion(smallText);
@@ -59,7 +60,8 @@ public class SortActivity extends AppCompatActivity {
             }
             // 분류가 끝나면 다음화면으로 이동하는 버튼
             else {
-                Intent i = new Intent(SortActivity.this, MainActivity.class);
+                Intent i = new Intent(SortActivity.this, Edu1Activity.class);
+                i.putExtra("Small", small);  // 소분류 전달
                 startActivity(i);
             }
         });
