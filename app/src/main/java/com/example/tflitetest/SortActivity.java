@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SortActivity extends AppCompatActivity {
 
+    private ImageView imageView;
     private TextView largeText, smallText;
     private Button yesBtn, noBtn;
 
@@ -28,6 +32,7 @@ public class SortActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort);
 
+        imageView = (ImageView) findViewById(R.id.imageView);
         largeText = (TextView) findViewById(R.id.largeText);
         smallText = (TextView) findViewById(R.id.smallText);
         yesBtn = (Button) findViewById(R.id.yesBtn);
@@ -38,6 +43,11 @@ public class SortActivity extends AppCompatActivity {
         large = intent.getStringExtra("Large");  // 데이터 받기
         large = "bottle";           // 테스트: 만약 대분류 결과가 병이라면
         largeText.setText(large);
+
+        // 이미지 가져오기
+        byte[] byteArray = getIntent().getByteArrayExtra("Image");
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        imageView.setImageBitmap(bitmap);
 
         q = new WasteQuestion(smallText);
         makeQuestion(large);

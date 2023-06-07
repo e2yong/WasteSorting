@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -46,6 +49,7 @@ public class CameraActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
         textView = (TextView) findViewById(R.id.textView);
         nextBtn = (Button) findViewById(R.id.nextBtn);
+        nextBtn.setVisibility(View.INVISIBLE);
 
         // Classifier 초기화
         cls = new ClassifierWithModel(this);
@@ -56,11 +60,23 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         nextBtn.setOnClickListener(view -> {
+            // 이미지를 SortActivity로 전달
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            float scale = (float) (1024/(float)bitmap.getWidth());
+            int image_w = (int) (bitmap.getWidth() * scale);
+            int image_h = (int) (bitmap.getHeight() * scale);
+            Bitmap resize = Bitmap.createScaledBitmap(bitmap, image_w, image_h, true);
+            resize.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            // 대분류를 SortActivity로 전달
             String large = textView.getText().toString();
             large = large.replaceAll("class: ", "");
 
             Intent i = new Intent(CameraActivity.this, SortActivity.class);
-            i.putExtra("Large", large);  // 대분류 전달
+            i.putExtra("Large", large);         // 대분류 전달
+            i.putExtra("Image", byteArray);     // 이미지 전달
             startActivity(i);
         });
 
@@ -121,6 +137,8 @@ public class CameraActivity extends AppCompatActivity {
 
                 imageView.setImageBitmap(bitmap);
                 textView.setText(resultStr);
+                // next 버튼 나타나게
+                nextBtn.setVisibility(View.VISIBLE);
             }
         }
     }
