@@ -24,18 +24,64 @@ public class WasteQuestion {
     public void setAnswer(int i) { answer[a] = i; }
     public void setA() { a++; }
     public String getSmall() { return small; }
-    private void setSmall(String name) { small = name; end++; }
+    public void setSmall(String name) { small = name; end++; }
 
     // 소분류에 필요한 질문들
     public void isBox() {
-
+        text.setText("골판지인가?");
+        //골판지일 경우
+        if(answer[0] == 1){
+            text.setText("골판지 상자 입니다");
+            setSmall("골판지상자");
+        }
+        else if(answer[0] == 0){
+            //골판지가 아닐 경우
+            text.setText("스티로폼 인가?");
+            if(answer[1] == 1) {
+                //스티로폼 상자인 경우
+                text.setText("스티로폼 상자 입니다");
+                setSmall("스티로폼상자");
+            }
+            else if(answer[1] == 0){
+                //스티로폼 상자가 아닌경우  -> 일반쓰레기
+                //일단 일반까지 넣긴 했는데 상자의 경우에는 좀 더 고려해야할 부분이 필요할 수 있음
+                //소분류랑 대분류 바뀌면 그에 따라서 추가적인 수정이 필요할 듯함
+                text.setText("일반쓰레기 입니다");
+                setSmall("일반쓰레기");
+            }
+        }
     }
 
     public void isCan() {
+        text.setText("가스를 이용한 제품인가?");
+        //기타캔은 가스를 이용한 제품이다
+        if(answer[0] == 1){
+            //기타 캔인 경우
+            text.setText("기타캔 입니다");
+            setSmall("기타캔");
+        }
+        else if(answer[0] == 0){
+            //가스를 이용하지 않은 경우 -> 금속캔인 경우
+            text.setText("금속캔 입니다");
+            setSmall("금속캔");
+
+        }
 
     }
     public void isVinyl() {
+        text.setText("물건을 담는 용도인가?");
+        if(answer[0] == 1){
+            //비닐봉투인 경우
+            text.setText("비닐봉투 입니다");
+            setSmall("비닐봉투");
+        }
+        else if(answer[0] == 0){
+            //비닐봉투가 아닌경우
+            //비닐 포장재라고 고려 -> 소분류 대분류 수정하면 변경될 수 있음
 
+            text.setText("비닐포장재 입니다");
+            setSmall("비닐포장재");
+        }
     }
 
     public void isBottle() {
@@ -47,6 +93,7 @@ public class WasteQuestion {
             if (answer[1] == 1) {
                 text.setText("불연성쓰레기입니다.");
                 setSmall("불연성쓰레기");
+                //불연성 쓰레기는 재활용 되는 쓰레기는 아니나 배출 방법만 안내
             }
             // 유리-도자기가 아닐 경우
             else if (answer[1] == 0) {
@@ -55,6 +102,7 @@ public class WasteQuestion {
                 if (answer[2] == 1) {
                     text.setText("보증금병입니다.");
                     setSmall("보증금병");
+                    //한글 사용시 오류 있어서 일단 영어로 변수값 수정
                 }
                 // 유리-잡병일 경우
                 else if (answer[2] == 0) {
@@ -81,6 +129,7 @@ public class WasteQuestion {
                 }
             }
             // 플라스틱이 아닐 경우
+            //일반 쓰레기의 경우에는 어떻게 설명해야 할지 고민필요
             else if (answer[1] == 0) {
                 text.setText("일반쓰레기입니다.");
                 setSmall("일반쓰레기");

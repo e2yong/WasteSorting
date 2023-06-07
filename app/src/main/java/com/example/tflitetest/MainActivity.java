@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         treeImg = (ImageView) findViewById(R.id.treeImg);
         galleryBtn = (Button) findViewById(R.id.galleryBtn);
         cameraBtn = (Button) findViewById(R.id.cameraBtn);
@@ -36,7 +35,22 @@ public class MainActivity extends AppCompatActivity {
         pointText.setText("point: " + String.valueOf(point));
 
         // 이미지 변경
+        if(point<=20){
+            treeImg.setImageResource(R.drawable.tree1_);
+        }
+        else if(point <= 100){
+            //나무 이미지가 지금 제일 애매해서 좀 더 찾아보고 진행할 예정
+            treeImg.setImageResource(R.drawable.image);
+        }
+        else if(point <= 200){
 
+        }
+        else if (point <= 300){
+
+        }
+        else{
+            treeImg.setImageResource(R.drawable.image);
+        }
         // 갤러리에서 이미지 선택
         galleryBtn.setOnClickListener(view -> {
             Intent i = new Intent(MainActivity.this, GalleryActivity.class);

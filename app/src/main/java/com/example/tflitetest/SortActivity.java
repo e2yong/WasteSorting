@@ -41,7 +41,8 @@ public class SortActivity extends AppCompatActivity {
         // 대분류 가져오기
         Intent intent = getIntent();
         large = intent.getStringExtra("Large");  // 데이터 받기
-        large = "bottle";           // 테스트: 만약 대분류 결과가 병이라면
+        //large = "bottle";           // 테스트: 만약 대분류 결과가 병이라면
+        large = "vinyl" ; //테스트 : 만약 대분류 결과가 캔이면
         largeText.setText(large);
 
         // 이미지 가져오기
