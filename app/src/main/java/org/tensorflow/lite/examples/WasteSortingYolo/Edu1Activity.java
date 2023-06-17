@@ -54,7 +54,7 @@ public class Edu1Activity extends AppCompatActivity {
                 how = "규격 봉투에 넣어서 버리며, 해당하는 쓰레기의 종류는 유리,도자기,화분등 타지 않는 쓰레기입니다\n";
                 edu1Text.setText(how);
                 break;
-            case "잡병":
+            case "음료수병":
                 //유리-잡병일 경우
                 edu1Img.setImageResource(R.drawable.glassbottle);
                 smallText.setText(small+"의 분리배출방법\n");
@@ -69,7 +69,7 @@ public class Edu1Activity extends AppCompatActivity {
                 how += "찌그러 뜨린 후에 뚜껑을 닫고 투명페트병 전용수거함에 배출합니다";
                 edu1Text.setText(how);
                 break;
-            case "일반플라스틱":
+            case "플라스틱용기":
                 edu1Img.setImageResource(R.drawable.generalplastic);
                 smallText.setText(small+"의 분리배출방법\n");
                 how = "내용몰을 비우고, 물로헹구는 등 이물질을 제거하여 배출한다\n.라벨도 추가적으로 제거합니다\n";

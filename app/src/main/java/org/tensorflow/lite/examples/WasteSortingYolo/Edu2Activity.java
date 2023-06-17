@@ -54,7 +54,7 @@ public class Edu2Activity extends AppCompatActivity {
                 edu2Text.setText(how);
                 break;
 
-            case "잡병":
+            case "음료수병":
                 //유리-잡병의 경우
                 edu2Img.setImageResource(R.drawable.glass_recycling);
                 smallText.setText(small+"의 재활용과정");
@@ -73,13 +73,13 @@ public class Edu2Activity extends AppCompatActivity {
                 how += "정제를 통하여 플라스틱 칩을 만들어 새로운 제품으로 탈바꿈하게 됩니다.";
                 edu2Text.setText(how);
                 break;
-            case "일반플라스틱":
+            case "플라스틱용기":
                 //일반플라스틱의 경우
                 //일반 플라스틱은 분리배출은 진행하나 재활용은 하지 않아서 과정에 대해서만 설명
                 //그림을 바꾸지 않았음
                 edu2Img.setImageResource(R.drawable.generalplastic);
                 smallText.setText(small+"의 재활용과정");
-                how = "일반플라스틱의 경우에는 색을 내기 위해 사용한 색소 뿐만 아니라,\n";
+                how = "플라스틱 용기의 경우에는 색을 내기 위해 사용한 색소 뿐만 아니라,\n";
                 how += "나일론,철등과 같은 불순물이 함유되어 있어서 재활용을 진행하지는 않습니다.\n";
                 edu2Text.setText(how);
                 break;
