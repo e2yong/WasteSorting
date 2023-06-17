@@ -1,7 +1,6 @@
 package org.tensorflow.lite.examples.WasteSortingYolo;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,11 +16,6 @@ public class SortActivity extends AppCompatActivity {
     public String large, small;
     private WasteQuestion q;    // 질문
 
-    // 포인트 관련
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    private int point;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +29,7 @@ public class SortActivity extends AppCompatActivity {
         // 대분류 가져오기
         Intent intent = getIntent();
         large = intent.getStringExtra("large");  // 데이터 받기
-        large = "bottle";           // 테스트: 만약 대분류 결과가 병이라면
+        // large = "bottle";           // 테스트: 만약 대분류 결과가 병이라면
         largeText.setText(large);
 
         q = new WasteQuestion(smallText);
