@@ -29,8 +29,8 @@ public class DetectorFactory {
             };
         }
         // best-fp16 -> 원하는 모델 파일과 라벨 파일
-        else if (modelFilename.equals("bottle.tflite")) {
-            labelFilename = "file:///android_asset/bottle.txt";
+        else if (modelFilename.equals("trash.tflite")) {
+            labelFilename = "file:///android_asset/trash.txt";
             isQuantized = false;
             inputSize = 416;
             output_width = new int[]{40, 20, 10};
